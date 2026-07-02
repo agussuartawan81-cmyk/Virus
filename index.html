@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volcano Eruption - Media Interaktif Geografi Kelas 10</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Memaksa dimensi tetap 916x516 tanpa scroll luar */
+        body {
+            background-color: #0f172a;
+            color: #f1f5f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .canvas-container {
+            width: 916px;
+            height: 516px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 3px solid #f97316;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Custom scrollbar untuk konten dalam agar tetap rapi */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #f97316;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #ea580c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="canvas-container">
+        <!-- HEADER ALAT PERAGA -->
+        <header class="bg-slate-900 border-b border-orange-500/30 px-4 py-2 flex justify-between items-center shrink-0">
+            <div class="flex items-center gap-2">
+                <span class="bg-orange-600 text-white text-xs px-2 py-1 rounded font-bold animate-pulse">
+                    <i class="fa-solid fa-volcano mr-1"></i>3D/AR LIVE
+                </span>
+                <div>
+                    <h1 class="text-base font-bold text-orange-500 tracking-wide uppercase leading-none">Volcano Eruption</h1>
+                    <p class="text-[10px] text-slate-400">Geografi Kelas 10 • Fase E • SMAN 2 Busungbiu</p>
+                </div>
+            </div>
+            <div class="flex gap-1">
+                <button onclick="switchTab('info')" id="btn-info" class="tab-btn px-3 py-1 text-xs font-semibold rounded bg-orange-600 text-white transition-all">
+                    <i class="fa-solid fa-book-open mr-1"></i> Materi & CP
+                </button>
+                <button onclick="switchTab('evaluasi')" id="btn-evaluasi" class="tab-btn px-3 py-1 text-xs font-semibold rounded bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all">
+                    <i class="fa-solid fa-graduation-cap mr-1"></i> Evaluasi (HOTS)
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT (DUAL COLUMN) -->
+        <main class="flex flex-1 overflow-hidden">
+            
+            <!-- KOLOM KIRI: MATERI ATAU EVALUASI (LEBAR 50%) -->
+            <section class="w-1/2 border-r border-slate-700/50 flex flex-col justify-between bg-slate-900/40 p-4 overflow-hidden">
+                
+                <!-- KONTEN TAB 1: MATERI & CP -->
+                <div id="tab-materi-content" class="flex-1 overflow-y-auto custom-scrollbar pr-1 space-y-3">
+                    
+                    <!-- CAPAIAN PEMBELAJARAN (CP) -->
+                    <div class="bg-orange-950/20 border-l-4 border-orange-500 p-3 rounded-r-md">
+                        <h3 class="text-xs font-bold text-orange-400 uppercase tracking-wide flex items-center gap-1 mb-1">
+                            <i class="fa-solid fa-bullseye"></i> Capaian Pembelajaran (Fase E)
+                        </h3>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Siswa mampu memahami dinamika litosfer dan dampaknya terhadap kehidupan, khususnya menganalisis proses vulkanisme, tipe letusan gunung api, serta mitigasi bencana terkait.
+                        </p>
+                    </div>
+
+                    <!-- EXPLANATION TEXT TEORI -->
+                    <div class="bg-slate-800/50 border border-slate-700 p-3 rounded-lg space-y-2">
+                        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wide flex items-center gap-1 border-b border-slate-700 pb-1">
+                            <i class="fa-solid fa-circle-info text-orange-400"></i> Eksplanasi Proses Vulkanisme
+                        </h3>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Gunung meletus adalah fenomena alam di mana magma di dalam perut bumi didorong keluar oleh gas bertekanan tinggi melalui diatrema.
+                        </p>
+                        
+                        <!-- GENERIC STRUCTURE OF EXPLANATION TEXT -->
+                        <div class="mt-2 space-y-2">
+                            <h4 class="text-[10px] font-bold text-orange-400 tracking-wider uppercase">Struktur Teks Eksplanasi:</h4>
+                            
+                            <!-- Part 1 -->
+                            <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
+                                <span class="text-[9px] font-bold bg-blue-900/80 text-blue-300 px-1.5 py-0.5 rounded mr-1">1. General Statement</span>
+                                <p class="text-[10px] text-slate-400 mt-1">
+                                    Pernyataan umum yang memperkenalkan fenomena vulkanisme sebagai bagian dari aktivitas tektonik lempeng bumi di wilayah <i>Ring of Fire</i>.
+                                </p>
+                            </div>
+
+                            <!-- Part 2 -->
+                            <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
+                                <span class="text-[9px] font-bold bg-green-900/80 text-green-300 px-1.5 py-0.5 rounded mr-1">2. Sequenced Explanation</span>
+                                <ul class="text-[10px] text-slate-400 mt-1 list-disc list-inside space-y-0.5">
+                                    <li>Magma terbentuk akibat peleburan batuan di zona subduksi.</li>
+                                    <li>Tekanan gas magmatik meningkat di kantong magma (dapur magma).</li>
+                                    <li>Magma bergerak naik ke atas melalui celah litosfer.</li>
+                                    <li>Letusan (erupsi) terjadi melepaskan lava, tefra, dan awan panas.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Part 3 -->
+                            <div class="bg-slate-900/60 p-2 rounded border border-slate-700/50">
+                                <span class="text-[9px] font-bold bg-purple-900/80 text-purple-300 px-1.5 py-0.5 rounded mr-1">3. Closing / Application</span>
+                                <p class="text-[10px] text-slate-400 mt-1">
+                                    Simpulan dampak letusan yang menyuburkan tanah sekitar namun membutuhkan langkah mitigasi bencana yang ketat demi keselamatan penduduk.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- IDENTITAS PENYUSUN -->
+                    <div class="text-[10px] text-slate-500 italic flex items-center justify-between pt-1 border-t border-slate-800">
+                        <span>Penyusun: SMAN 2 Busungbiu</span>
+                        <span>Geografi Kelas X (Fase E)</span>
+                    </div>
+
+                </div>
+
+                <!-- KONTEN TAB 2: EVALUASI (HOT SOAL) - AWALNYA HIDDEN -->
+                <div id="tab-evaluasi-content" class="hidden flex-1 flex-col justify-between overflow-hidden">
+                    
+                    <!-- Area Pertanyaan dan Skor -->
+                    <div class="flex justify-between items-center mb-2 bg-slate-800/40 p-2 rounded border border-slate-700/40 shrink-0">
+                        <span class="text-xs font-bold text-orange-400">
+                            Soal <span id="current-question-num">1</span> dari 10
+                        </span>
+                        <div class="text-xs font-semibold text-slate-300">
+                            Skor: <span id="current-score" class="text-green-400 font-bold">0</span>/100
+                        </div>
+                    </div>
+
+                    <!-- Soal Box -->
+                    <div class="flex-1 overflow-y-auto custom-scrollbar pr-1 space-y-3 flex flex-col justify-center">
+                        <div class="bg-slate-800/50 border border-slate-700 p-3 rounded-lg">
+                            <span class="text-[10px] bg-red-950 text-red-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider mb-2 inline-block">
+                                <i class="fa-solid fa-brain mr-1"></i>HOTS Question
+                            </span>
+                            <p id="question-text" class="text-xs text-slate-100 font-medium leading-relaxed">
+                                Memuat teks pertanyaan...
+                            </p>
+                        </div>
+
+                        <!-- Pilihan Jawaban (Siswa Menebak) -->
+                        <div class="space-y-1.5" id="options-container">
+                            <!-- Tombol pilihan dimuat via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Navigasi & Umpan Balik -->
+                    <div class="mt-2 shrink-0 space-y-2">
+                        <!-- Umpan balik jawaban -->
+                        <div id="feedback-container" class="hidden text-center p-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2">
+                            <!-- Feedback via JS -->
+                        </div>
+
+                        <div class="flex justify-between items-center pt-2 border-t border-slate-800">
+                            <button id="btn-prev" onclick="navigateQuestion(-1)" class="px-3 py-1 bg-slate-800 text-slate-400 rounded hover:bg-slate-700 text-xs transition-colors" disabled>
+                                <i class="fa-solid fa-arrow-left mr-1"></i>Sebelumnya
+                            </button>
+                            <button id="btn-submit" onclick="checkSelectedAnswer()" class="px-4 py-1.5 bg-green-600 text-white rounded hover:bg-green-500 text-xs font-semibold transition-all">
+                                <i class="fa-solid fa-key mr-1"></i>Tebak Jawaban
+                            </button>
+                            <button id="btn-next" onclick="navigateQuestion(1)" class="px-3 py-1 bg-slate-800 text-slate-300 rounded hover:bg-slate-700 text-xs transition-colors">
+                                Berikutnya<i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- KOLOM KANAN: SIMULASI 3D/AR ASSEMBLR EDU (LEBAR 50%) -->
+            <section class="w-1/2 bg-slate-950 relative flex flex-col">
+                <!-- Label Iframe Indikator -->
+                <div class="absolute top-2 left-2 z-10 bg-slate-900/90 border border-orange-500/40 px-2 py-1 rounded text-[10px] text-orange-400 font-semibold shadow-lg backdrop-blur-sm flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                    <span>Assemblr Edu 3D Viewer</span>
+                </div>
+                
+                <!-- Iframe Embed Code Assemblr Edu -->
+                <div class="w-full h-full bg-slate-900 flex items-center justify-center">
+                    <iframe 
+                        src="https://viewer.assemblrworld.com/Embed/-3WpqJ355gLGxqZtFRto" 
+                        allow="camera; microphone; gyroscope; accelerometer; magnetometer; xr-spatial-tracking; fullscreen" 
+                        allowFullScreen
+                        class="w-full h-full border-0"
+                        title="Volcano Eruption 3D Model">
+                    </iframe>
+                </div>
+
+                <!-- Petunjuk Navigasi AR -->
+                <div class="absolute bottom-2 left-2 right-2 bg-slate-900/80 p-1.5 rounded text-[9px] text-slate-400 text-center backdrop-blur-sm border border-slate-700/40">
+                    <i class="fa-solid fa-hand-pointer text-orange-500 mr-1"></i> Klik dan drag untuk memutar model 3D. Gunakan scroll untuk memperbesar/memperkecil.
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER / CREDIT BAR -->
+        <footer class="bg-slate-950 px-4 py-1 text-[10px] text-slate-500 flex justify-between items-center border-t border-slate-800 shrink-0">
+            <span>Media Pembelajaran Geografi Kelas X Fase E</span>
+            <span>SMAN 2 Busungbiu &copy; 2026</span>
+        </footer>
+    </div>
+
+    <!-- MODAL POPUP JIKA SELESAI EVALUASI -->
+    <div id="modal-result" class="hidden absolute inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-900 border-2 border-orange-500 rounded-xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
+            <div class="w-16 h-16 bg-orange-600/20 text-orange-500 rounded-full flex items-center justify-center mx-auto text-3xl">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-lg font-bold text-white">Evaluasi Selesai!</h3>
+                <p class="text-xs text-slate-400">Luar biasa! Kamu telah menyelesaikan kuis HOTS mitigasi vulkanisme.</p>
+            </div>
+            <div class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+                <p class="text-xs text-slate-400">Total Skor Kamu:</p>
+                <p class="text-3xl font-extrabold text-orange-500 mt-1" id="final-score">0 / 100</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="restartKuis()" class="flex-1 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded text-xs font-semibold transition-all">
+                    <i class="fa-solid fa-arrow-rotate-left mr-1"></i> Ulangi Kuis
+                </button>
+                <button onclick="closeModal()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs font-semibold transition-all">
+                    Lihat Pembahasan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATA EVALUASI: 10 SOAL GEOGRAFI HOTS BAHASA INDONESIA
+        const questions = [
+            {
+                id: 1,
+                question: "Sebagai bagian dari Ring of Fire, Indonesia memiliki banyak gunung api aktif. Mengapa pertemuan lempeng konvergen di Indonesia justru memicu peningkatan intensitas pembentukan gunung api aktif secara signifikan?",
+                options: [
+                    { key: "A", text: "Peleburan lempeng samudra yang menyusup ke bawah lempeng benua menghasilkan magma cair asam berkadar gas tinggi." },
+                    { key: "B", text: "Saling menjauhnya lempeng menyebabkan magma dari mantel atas keluar dengan sangat bebas tanpa hambatan." },
+                    { key: "C", text: "Gaya gesek antarlempeng yang mendatar menghasilkan celah vakum yang menyedot inti bumi ke permukaan." },
+                    { key: "D", text: "Tekanan udara di zona subduksi sangat rendah sehingga mempermudah pelepasan gas magma ke atmosfer." }
+                ],
+                correct: "A",
+                explanation: "Pada zona konvergen (subduksi), lempeng samudra menyusup di bawah lempeng benua. Panas ekstrem melelehkan batuan tersebut menjadi magma asam kaya silika dan gas, memicu tekanan tinggi penyebab aktivitas vulkanik intens."
+            },
+            {
+                id: 2,
+                question: "Analisis dampak letusan gunung api terhadap pola pertanian di sekitarnya. Mengapa wilayah pasca-erupsi vulkanik beberapa tahun kemudian selalu menjadi lahan pertanian yang sangat subur?",
+                options: [
+                    { key: "A", text: "Abu vulkanik mengandung zat asam yang langsung mematikan hama tanaman secara permanen." },
+                    { key: "B", text: "Material tefra kaya unsur hara makro dan mikro mengalami pelapukan yang memperbaiki struktur tanah." },
+                    { key: "C", text: "Suhu tanah bekas aliran lahar dingin naik secara permanen mempercepat fotosintesis tanaman." },
+                    { key: "D", text: "Gas belerang yang terendap mengikat nitrogen bebas di udara secara otomatis tanpa bantuan bakteri." }
+                ],
+                correct: "B",
+                explanation: "Abu vulkanik dan tefra yang dikeluarkan kaya akan unsur mineral penting seperti kalium, fosfor, magnesium, dan silika. Setelah melapuk, material ini menciptakan tanah andosol yang sangat subur."
+            },
+            {
+                id: 3,
+                question: "Sebuah desa berjarak 15 km dari puncak gunung api aktif yang sedang mengalami erupsi efusif dengan lava yang sangat encer (basaltis). Langkah mitigasi awal apa yang paling tepat bagi warga setempat?",
+                options: [
+                    { key: "A", text: "Segera mengungsi karena lava encer basaltis memiliki kecepatan aliran sangat tinggi dan merusak." },
+                    { key: "B", text: "Tetap tenang di dalam rumah beton karena bahaya aliran lava sangat lambat dan mudah dihindari." },
+                    { key: "C", text: "Membuat parit besar arah lurus untuk mengalirkan lava ke wilayah pemukiman tetangga terdekat." },
+                    { key: "D", text: "Menimbun sungai terdekat dengan pasir agar lava tidak mengalir ke wilayah pemukiman hilir." }
+                ],
+                correct: "B",
+                explanation: "Lava basaltis encer pada erupsi efusif umumnya mengalir lambat pada kemiringan landai. Meskipun merusak infrastruktur yang dilalui, bahaya langsung terhadap nyawa relatif rendah sehingga evakuasi dapat dilakukan dengan tenang dan terencana tanpa panik berlebih."
+            },
+            {
+                id: 4,
+                question: "Mengapa letusan tipe Plinian dianggap jauh lebih destruktif bagi iklim global dibandingkan dengan letusan tipe Hawaii?",
+                options: [
+                    { key: "A", text: "Tipe Plinian melepaskan lava pijar dalam volume jutaan kubik yang langsung menghangatkan air laut dunia." },
+                    { key: "B", text: "Tipe Plinian melontarkan abu halus dan gas SO2 menembus stratosfer, memicu aerosol penghalang radiasi matahari." },
+                    { key: "C", text: "Tipe Hawaii hanya meletus di tengah samudra sehingga dampaknya diserap langsung oleh terumbu karang." },
+                    { key: "D", text: "Tipe Plinian merusak lapisan ozon akibat tingginya kandungan oksigen murni yang terlempar." }
+                ],
+                correct: "B",
+                explanation: "Letusan eksplosif dahsyat tipe Plinian melontarkan gas belerang dioksida (SO2) dan abu halus hingga ke stratosfer. Aerosol sulfat yang terbentuk memantulkan kembali radiasi matahari, menyebabkan penurunan suhu global (volcanic winter)."
+            },
+            {
+                id: 5,
+                question: "Perhatikan struktur teks eksplanasi letusan gunung api. Bagian manakah dari struktur berikut yang paling tepat menjelaskan proses desintegrasi magma akibat ekspansi gas?",
+                options: [
+                    { key: "A", text: "General Statement (Pernyataan umum pengenalan gunung api di dunia)" },
+                    { key: "B", text: "Sequenced Explanation (Penjelasan deretan sebab akibat proses fisik letusan)" },
+                    { key: "C", text: "Closing (Interpretasi dan saran mitigasi menghadapi bahaya awan panas)" },
+                    { key: "D", text: "Reorientasi (Penetapan kembali status level aktivitas gunung api)" }
+                ],
+                correct: "B",
+                explanation: "Proses desintegrasi magma akibat ekspansi gas adalah bagian kronologis sebab-akibat terjadinya letusan fisik, yang secara terperinci dibahas pada bagian 'Sequenced Explanation' dalam teks eksplanasi."
+            },
+            {
+                id: 6,
+                question: "Seorang peneliti menemukan endapan piroklastik berupa batu apung berpori besar di sekitar lereng Gunung Agung. Informasi geologis apa yang dapat ditarik dari temuan tersebut?",
+                options: [
+                    { key: "A", text: "Gunung tersebut mengalami erupsi non-eksplosif yang didominasi oleh magma sangat miskin gas." },
+                    { key: "B", text: "Magma yang meletus bersifat asam, kental, dan kaya akan gas terlarut saat terjadi erupsi eksplosif." },
+                    { key: "C", text: "Gunung Agung pernah terendam air laut purba yang menyebabkan batuan mendingin sangat lambat." },
+                    { key: "D", text: "Lahar dingin telah membeku secara cepat akibat tekanan udara luar lereng yang ekstrem dingin." }
+                ],
+                correct: "B",
+                explanation: "Batu apung (pumice) terbentuk dari magma asam kental dengan kandungan gas tinggi yang mendingin dengan cepat saat terlontar secara eksplosif. Gas yang terperangkap membentuk pori-pori besar pada batuan."
+            },
+            {
+                id: 7,
+                question: "Bagaimana kaitan antara peristiwa gempa tremor vulkanik beruntun dengan prediksi waktu letusan gunung api?",
+                options: [
+                    { key: "A", text: "Tremor menandakan magma telah membeku di dalam pipa kepundan sehingga letusan batal terjadi." },
+                    { key: "B", text: "Tremor vulkanik mengindikasikan pergerakan dinamis fluida magma yang mendobrak batuan penyumbat menuju permukaan." },
+                    { key: "C", text: "Tremor menunjukkan bahwa tekanan gas di dalam dapur magma telah habis dilepaskan secara perlahan." },
+                    { key: "D", text: "Tremor hanya merupakan efek dari pergeseran lempeng tektonik regional yang tidak berhubungan dengan magma." }
+                ],
+                correct: "B",
+                explanation: "Gempa tremor vulkanik beruntun (kontinu) adalah getaran mikro akibat dorongan magma yang sedang berjuang naik memecah sumbat batuan kepundan, pertanda kuat bahwa erupsi akan segera terjadi."
+            },
+            {
+                id: 8,
+                question: "Awan panas (pyroclastic flow) adalah salah satu ancaman paling mematikan saat erupsi. Faktor apa yang membuat aliran ini mampu bergerak sangat cepat hingga ratusan kilometer per jam?",
+                options: [
+                    { key: "A", text: "Aliran bergerak di atas bantalan gas panas bertekanan tinggi yang meminimalisir gesekan dengan tanah." },
+                    { key: "B", text: "Material awan panas ditarik oleh daya magnetis kutub bumi yang sangat kuat di area pegunungan." },
+                    { key: "C", text: "Suhu awan panas yang dingin mengembunkan udara sekitarnya menjadi pelumas alami." },
+                    { key: "D", text: "Gaya gravitasi bulan menarik abu vulkanik searah dengan kemiringan lereng secara horizontal." }
+                ],
+                correct: "A",
+                explanation: "Awan panas meluncur cepat karena turbulensi gas panas bersuhu tinggi (vulkanik) bertindak sebagai bantalan udara tanpa gesekan (fluidisasi) di atas lereng yang miring, didorong oleh gravitasi."
+            },
+            {
+                id: 9,
+                question: "Gunung Batur di Bali memiliki kaldera ganda yang sangat luas dan indah. Secara geomorfologis, bagaimana proses pembentukan kaldera raksasa tersebut terjadi?",
+                options: [
+                    { key: "A", text: "Tumpukan abu vulkanik yang bertumpuk ribuan tahun membentuk pola cekungan melingkar alami." },
+                    { key: "B", text: "Runtuhnya puncak gunung api ke dalam kantong magma yang kosong akibat erupsi eksplosif berskala besar." },
+                    { key: "C", text: "Erosi angin topan yang terus menerus mengikis batuan basalt di sekitar kawah utama." },
+                    { key: "D", text: "Tabrakan meteorit purba tepat di lubang kepundan aktif gunung pada masa prasejarah." }
+                ],
+                correct: "B",
+                explanation: "Kaldera terbentuk ketika letusan dahsyat menguras habis isi dapur magma dalam sekejap. Tanpa penopang di bawahnya, puncak gunung runtuh ke dalam ruang kosong magma, membentuk kawah runtuhan raksasa."
+            },
+            {
+                id: 10,
+                question: "Jika Anda tinggal di kawasan rawan bencana vulkanik (KRB III), tindakan mitigasi struktural paling efektif apa yang harus dibangun secara kolektif oleh komunitas desa?",
+                options: [
+                    { key: "A", text: "Membangun bunker bawah tanah tanpa ventilasi udara agar terhindar dari gas beracun secara absolut." },
+                    { key: "B", text: "Mendirikan tanggul sabo dam di aliran sungai vulkanik untuk mengendalikan arah aliran lahar dingin." },
+                    { key: "C", text: "Memasang jaring kawat raksasa di atas kawah gunung untuk menahan lontaran bom vulkanik." },
+                    { key: "D", text: "Membangun rumah panggung kayu tinggi agar lava panas mengalir bebas di bawah kolong rumah." }
+                ],
+                correct: "B",
+                explanation: "Mitigasi struktural kolektif yang sangat efektif adalah pembangunan Sabo Dam. Sabo dam berfungsi menahan, menyaring, dan mengarahkan lahar dingin agar tidak meluap menghancurkan pemukiman warga di dataran rendah."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let selectedAnswers = Array(10).fill(null); // Menyimpan pilihan siswa
+        let checkedQuestions = Array(10).fill(false); // Status apakah siswa sudah menebak/memeriksa jawaban ini
+        let userScore = 0;
+
+        // FUNGSI GANTI TAB (MATERI vs EVALUASI)
+        function switchTab(tab) {
+            const btnInfo = document.getElementById('btn-info');
+            const btnEvaluasi = document.getElementById('btn-evaluasi');
+            const contentMateri = document.getElementById('tab-materi-content');
+            const contentEvaluasi = document.getElementById('tab-evaluasi-content');
+
+            if (tab === 'info') {
+                btnInfo.className = "tab-btn px-3 py-1 text-xs font-semibold rounded bg-orange-600 text-white transition-all";
+                btnEvaluasi.className = "tab-btn px-3 py-1 text-xs font-semibold rounded bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all";
+                contentMateri.classList.remove('hidden');
+                contentEvaluasi.classList.add('hidden');
+                contentEvaluasi.classList.remove('flex');
+            } else {
+                btnEvaluasi.className = "tab-btn px-3 py-1 text-xs font-semibold rounded bg-orange-600 text-white transition-all";
+                btnInfo.className = "tab-btn px-3 py-1 text-xs font-semibold rounded bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all";
+                contentMateri.classList.add('hidden');
+                contentEvaluasi.classList.remove('hidden');
+                contentEvaluasi.classList.add('flex');
+                loadQuestion();
+            }
+        }
+
+        // LOAD SOAL AKTIF
+        function loadQuestion() {
+            const currentQ = questions[currentQuestionIndex];
+            
+            // Set Nomor & Teks Soal
+            document.getElementById('current-question-num').innerText = currentQuestionIndex + 1;
+            document.getElementById('question-text').innerText = currentQ.question;
+            
+            // Render Pilihan Jawaban
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            currentQ.options.forEach(opt => {
+                const isSelected = selectedAnswers[currentQuestionIndex] === opt.key;
+                const isChecked = checkedQuestions[currentQuestionIndex];
+                
+                let btnClass = "w-full text-left p-2.5 rounded-lg text-xs transition-all flex items-start gap-2 border ";
+                
+                if (isChecked) {
+                    // Jika sudah ditebak/dikunci jawabannya
+                    if (opt.key === currentQ.correct) {
+                        btnClass += "bg-green-950/80 border-green-500 text-green-200"; // Jawaban Benar
+                    } else if (isSelected && opt.key !== currentQ.correct) {
+                        btnClass += "bg-red-950/80 border-red-500 text-red-200"; // Jawaban Salah Siswa
+                    } else {
+                        btnClass += "bg-slate-900/40 border-slate-800 text-slate-500"; // Jawaban Lain yang bukan pilihan
+                    }
+                } else {
+                    // Jika belum dikonfirmasi/ditebak
+                    if (isSelected) {
+                        btnClass += "bg-orange-950/40 border-orange-500 text-orange-200 font-medium";
+                    } else {
+                        btnClass += "bg-slate-900/40 border-slate-800 text-slate-300 hover:bg-slate-800/60 hover:border-slate-700";
+                    }
+                }
+
+                // Nonaktifkan tombol jika sudah dicek/tebak
+                const disabledAttr = isChecked ? "disabled" : "";
+
+                optionsContainer.innerHTML += `
+                    <button onclick="selectOption('${opt.key}')" ${disabledAttr} class="${btnClass}">
+                        <span class="font-bold text-orange-400 shrink-0">${opt.key}.</span>
+                        <span class="leading-relaxed">${opt.text}</span>
+                    </button>
+                `;
+            });
+
+            // Update Navigasi Buttons
+            document.getElementById('btn-prev').disabled = currentQuestionIndex === 0;
+            
+            // Ubah teks tombol tebak menjadi 'Lihat Hasil' di akhir
+            const btnSubmit = document.getElementById('btn-submit');
+            if (checkedQuestions[currentQuestionIndex]) {
+                btnSubmit.innerHTML = `<i class="fa-solid fa-circle-info mr-1"></i>Sudah Ditebak`;
+                btnSubmit.disabled = true;
+                btnSubmit.className = "px-4 py-1.5 bg-slate-700 text-slate-400 rounded text-xs font-semibold cursor-not-allowed";
+                showFeedback(true);
+            } else {
+                btnSubmit.innerHTML = `<i class="fa-solid fa-key mr-1"></i>Tebak Jawaban`;
+                btnSubmit.disabled = selectedAnswers[currentQuestionIndex] === null;
+                if (selectedAnswers[currentQuestionIndex] === null) {
+                    btnSubmit.className = "px-4 py-1.5 bg-slate-800 text-slate-500 rounded text-xs font-semibold cursor-not-allowed border border-slate-700";
+                } else {
+                    btnSubmit.className = "px-4 py-1.5 bg-green-600 text-white rounded hover:bg-green-500 text-xs font-semibold transition-all";
+                }
+                showFeedback(false);
+            }
+
+            // Atur tombol berikutnya/selesai
+            const btnNext = document.getElementById('btn-next');
+            if (currentQuestionIndex === questions.length - 1) {
+                btnNext.innerHTML = `Selesai <i class="fa-solid fa-flag-checkered ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>`;
+            }
+        }
+
+        // PILIH JAWABAN (BELUM DIKONFIRMASI)
+        function selectOption(key) {
+            if (checkedQuestions[currentQuestionIndex]) return; // Cegah ubah jawaban jika sudah dikunci
+            selectedAnswers[currentQuestionIndex] = key;
+            loadQuestion();
+        }
+
+        // TEBAK JAWABAN (KONFIRMASI & CEK BENAR/SALAH)
+        function checkSelectedAnswer() {
+            const currentQ = questions[currentQuestionIndex];
+            const studentAns = selectedAnswers[currentQuestionIndex];
+            
+            if (!studentAns) return;
+
+            checkedQuestions[currentQuestionIndex] = true;
+            
+            // Hitung skor jika benar
+            if (studentAns === currentQ.correct) {
+                userScore += 10;
+                document.getElementById('current-score').innerText = userScore;
+            }
+
+            loadQuestion();
+        }
+
+        // TAMPILKAN FEEDBACK/PEMBAHASAN
+        function showFeedback(show) {
+            const feedbackContainer = document.getElementById('feedback-container');
+            if (!show) {
+                feedbackContainer.classList.add('hidden');
+                return;
+            }
+
+            const currentQ = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswers[currentQuestionIndex] === currentQ.correct;
+
+            feedbackContainer.classList.remove('hidden');
+            if (isCorrect) {
+                feedbackContainer.className = "text-center p-2 rounded bg-green-950/60 border border-green-500/30 text-[11px] text-green-300 flex flex-col items-center gap-1";
+                feedbackContainer.innerHTML = `
+                    <div class="flex items-center gap-1.5 font-bold">
+                        <i class="fa-solid fa-circle-check text-green-400"></i> Tebakan Kamu Tepat Sekali!
+                    </div>
+                    <p class="text-[10px] text-slate-300 font-normal leading-relaxed">${currentQ.explanation}</p>
+                `;
+            } else {
+                feedbackContainer.className = "text-center p-2 rounded bg-red-950/60 border border-red-500/30 text-[11px] text-red-300 flex flex-col items-center gap-1";
+                feedbackContainer.innerHTML = `
+                    <div class="flex items-center gap-1.5 font-bold">
+                        <i class="fa-solid fa-circle-xmark text-red-400"></i> Kurang Tepat! Jawaban yang Benar adalah ${currentQ.correct}
+                    </div>
+                    <p class="text-[10px] text-slate-300 font-normal leading-relaxed">${currentQ.explanation}</p>
+                `;
+            }
+        }
+
+        // NAVIGASI SOAL
+        function navigateQuestion(direction) {
+            const targetIndex = currentQuestionIndex + direction;
+
+            if (targetIndex >= 0 && targetIndex < questions.length) {
+                currentQuestionIndex = targetIndex;
+                loadQuestion();
+            } else if (targetIndex === questions.length) {
+                // Selesai Kuis
+                showResultModal();
+            }
+        }
+
+        // TAMPILKAN MODAL HASIL
+        function showResultModal() {
+            document.getElementById('final-score').innerText = `${userScore} / 100`;
+            document.getElementById('modal-result').classList.remove('hidden');
+        }
+
+        // TUTUP MODAL
+        function closeModal() {
+            document.getElementById('modal-result').classList.add('hidden');
+        }
+
+        // RESTART KUIS
+        function restartKuis() {
+            currentQuestionIndex = 0;
+            selectedAnswers = Array(10).fill(null);
+            checkedQuestions = Array(10).fill(false);
+            userScore = 0;
+            document.getElementById('current-score').innerText = "0";
+            closeModal();
+            loadQuestion();
+        }
+
+        // Inisialisasi awal saat load
+        window.onload = function() {
+            loadQuestion();
+        }
+    </script>
+</body>
+</html>
